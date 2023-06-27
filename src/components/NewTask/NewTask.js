@@ -1,41 +1,28 @@
-import { useState } from 'react';
-
+import React, { useRef } from 'react';
+import useFetch from '../../hooks/use-fetch';
 import Section from '../UI/Section';
 import TaskForm from './TaskForm';
 
 const NewTask = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const taskInputRef = useRef();
+  const [fetchTasks, isLoading, error] = useFetch(dataHandler)
 
-  const enterTaskHandler = async (taskText) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(
-        'https://testbackend-dc297-default-rtdb.firebaseio.com/tasks.json',
-        {
-          method: 'POST',
-          body: JSON.stringify({ text: taskText }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+  function dataHandler(data) {
+    const generatedId = data.name; // firebase-specific => "name" contains generated id
+    const createdTask = { id: generatedId, text: taskInputRef.current };
+    props.onAddTask(createdTask);
+  }
 
-      if (!response.ok) {
-        throw new Error('Request failed!');
-      }
-
-      const data = await response.json();
-
-      const generatedId = data.name; // firebase-specific => "name" contains generated id
-      const createdTask = { id: generatedId, text: taskText };
-
-      props.onAddTask(createdTask);
-    } catch (err) {
-      setError(err.message || 'Something went wrong!');
+  const enterTaskHandler = (taskText) => {
+    taskInputRef.current = taskText
+    let obj = {
+      method: 'POST',
+      body: JSON.stringify({ text: taskInputRef.current }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }
-    setIsLoading(false);
+    fetchTasks(obj)
   };
 
   return (
