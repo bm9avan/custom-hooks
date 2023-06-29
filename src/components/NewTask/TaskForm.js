@@ -23,7 +23,7 @@ const TaskForm = (props) => {
       taskAgeRef.current.focus()
       return;
     }
-    props.onEnterTask(text);
+    props.onEnterTask(text, age);
   };
 
   return (

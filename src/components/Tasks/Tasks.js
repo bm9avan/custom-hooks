@@ -6,10 +6,11 @@ const Tasks = (props) => {
   let taskList = <h2>No tasks found. Start adding some!</h2>;
 
   if (props.items.length > 0) {
+    console.log(props.items)
     taskList = (
       <ul>
         {props.items.map((task) => (
-          <TaskItem key={task.id}>{task.text}</TaskItem>
+          <TaskItem key={task.id}>{[task.text, <br key={task.id + 15} />, task.age || 21]}</TaskItem>
         ))}
       </ul>
     );
