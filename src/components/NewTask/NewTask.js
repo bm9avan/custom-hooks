@@ -6,7 +6,8 @@ import TaskForm from './TaskForm';
 const NewTask = (props) => {
   const [fetchTasks, isLoading, error] = useFetch()
 
-  function dataHandler(data, taskText) {
+  function dataHandler(taskText, data) {
+    console.log(taskText)
     const generatedId = data.name; // firebase-specific => "name" contains generated id
     const createdTask = { id: generatedId, text: taskText };
     props.onAddTask(createdTask);
