@@ -11,7 +11,6 @@ const TaskForm = (props) => {
   
   const submitHandler = (event) => {
     event.preventDefault();
-    // setTouch(true)
     console.log(textError,ageError)
     if (textError || textError === null) {
       taskInputRef.current.focus()

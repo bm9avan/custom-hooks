@@ -6,7 +6,7 @@ import TaskForm from './TaskForm';
 const NewTask = (props) => {
   const [fetchTasks, isLoading, error] = useFetch()
 
-  function dataHandler(taskText,age, data) {
+  function dataHandler(taskText, age, data) {
     const generatedId = data.name; // firebase-specific => "name" contains generated id
     const createdTask = { id: generatedId, text: taskText, age };
     props.onAddTask(createdTask);
@@ -15,7 +15,7 @@ const NewTask = (props) => {
   const enterTaskHandler = (taskText, age) => {
     let obj = {
       method: 'POST',
-      body: JSON.stringify({ text: taskText , age }),
+      body: JSON.stringify({ text: taskText, age }),
       headers: {
         'Content-Type': 'application/json',
       },
