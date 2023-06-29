@@ -1,25 +1,24 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import classes from './TaskForm.module.css';
+import useInput from '../../hooks/use-input';
 
 const TaskForm = (props) => {
   const taskInputRef = useRef();
   const taskAgeRef = useRef();
-  const [text, setText] = useState('')
-  const [age, setAge] = useState('')
-  const [touch, setTouch] =useState(false) // we need to use two touched state variable for text and age separate but np;
+  const { value: text, onChange:textHandleChange, error:textError } = useInput('', (t) => t.trim().length !== 0) 
+  const { value: age, onChange: ageHandleChange, error: ageError } = useInput('', (t) => t.trim().length !== 0 && +t > 0) 
   
-  const textValid = text.trim().length !== 0
-  const ageValid = age.trim().length !== 0 && +age > 0
-
   const submitHandler = (event) => {
     event.preventDefault();
-    setTouch(true)
-    if (!textValid) {
+    // setTouch(true)
+    console.log(textError,ageError)
+    if (textError || textError === null) {
       taskInputRef.current.focus()
       return;
     }
-    if (!ageValid) {
+    if (ageError || ageError === null) {
+      console.log('print', ageError)
       taskAgeRef.current.focus()
       return;
     }
@@ -28,8 +27,8 @@ const TaskForm = (props) => {
 
   return (
     <form className={classes.form} onSubmit={submitHandler}>
-      <input className={`${(!textValid && touch) && classes.invalid}`} type='text' ref={taskInputRef} value={text} onChange={(e) => setText(e.target.value)} placeholder='name'/>
-      <input className={`${(!ageValid && touch) && classes.invalid}`} type='number' ref={taskAgeRef} value={age} onChange={(e) => setAge(e.target.value)} placeholder='age'/>
+      <input className={`${textError && classes.invalid}`} type='text' ref={taskInputRef} value={text} onChange={textHandleChange} placeholder='name'/>
+      <input className={`${ageError && classes.invalid}`} type='number' ref={taskAgeRef} value={age} onChange={ageHandleChange} placeholder='age'/>
       <button>{props.loading ? 'Sending...' : 'Add Task'}</button>
     </form>
   );

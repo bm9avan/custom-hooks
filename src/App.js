@@ -18,7 +18,7 @@ function App() {
 
   useEffect(() => {
     fetchTasks(null,dataHandler)
-  }, []);
+  }, []); // adding fetch task and making this wrap in useCallback in use-fetch.js will remove the waring but it reminde of this logic whenever i see erroe
 
   const taskAddHandler = (task) => {
     setTasks((prevTasks) => prevTasks.concat(task));
