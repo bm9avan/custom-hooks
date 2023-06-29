@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-const useFetch = (dataHandler) => {
+const useFetch = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const fetchTasks = async (obj = { method: "GET" }) => {
+    const fetchTasks = async (obj = { method: "GET" }, dataHandler) => {
         setIsLoading(true);
         setError(null)
         try {

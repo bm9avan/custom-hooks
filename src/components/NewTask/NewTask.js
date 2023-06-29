@@ -1,28 +1,26 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import useFetch from '../../hooks/use-fetch';
 import Section from '../UI/Section';
 import TaskForm from './TaskForm';
 
 const NewTask = (props) => {
-  const taskInputRef = useRef();
-  const [fetchTasks, isLoading, error] = useFetch(dataHandler)
+  const [fetchTasks, isLoading, error] = useFetch()
 
-  function dataHandler(data) {
+  function dataHandler(data, taskText) {
     const generatedId = data.name; // firebase-specific => "name" contains generated id
-    const createdTask = { id: generatedId, text: taskInputRef.current };
+    const createdTask = { id: generatedId, text: taskText };
     props.onAddTask(createdTask);
   }
 
   const enterTaskHandler = (taskText) => {
-    taskInputRef.current = taskText
     let obj = {
       method: 'POST',
-      body: JSON.stringify({ text: taskInputRef.current }),
+      body: JSON.stringify({ text: taskText }),
       headers: {
         'Content-Type': 'application/json',
       },
     }
-    fetchTasks(obj)
+    fetchTasks(obj, dataHandler.bind(null, taskText))
   };
 
   return (

@@ -6,7 +6,7 @@ import useFetch from './hooks/use-fetch';
 
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [fetchTasks, isLoading, error] = useFetch(dataHandler)
+  const [fetchTasks, isLoading, error] = useFetch()
 
   function dataHandler(data) {
     const loadedTasks = [];
@@ -17,7 +17,7 @@ function App() {
   }
 
   useEffect(() => {
-    fetchTasks()
+    fetchTasks(null,dataHandler)
   }, []);
 
   const taskAddHandler = (task) => {
